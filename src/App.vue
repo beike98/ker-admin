@@ -8,4 +8,5 @@ import "element-plus/theme-chalk/src/message.scss";
 </template>
 
 <style lang="scss">
+@import url(../src/assets/reset.scss);
 </style>
