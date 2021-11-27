@@ -10,17 +10,24 @@ const routes = [
         path: "/welcome",
         component: () => import("../components/Welcome.vue"),
       },
-      {
-        path: "/login",
-        component: () => import("../views/Login.vue"),
-      },
     ],
+  },
+  {
+    name: "login",
+    path: "/login",
+    component: () => import("../views/Login.vue"),
   },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== "login" && !window.localStorage.getItem("token"))
+    next({ name: "login" });
+  else next();
 });
 
 export default router;
