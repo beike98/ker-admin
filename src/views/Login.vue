@@ -13,17 +13,14 @@ const login = async () => {
     ElMessage.warning("用户名或密码未填写！");
     return;
   }
-  await loginApi({
+  const resLogin = await loginApi({
     username: username.value,
     password: SHA256(password.value),
-  })
-    .then((res) => {
-      const { name, token } = res;
-      window.localStorage.setItem("name", name);
-      window.localStorage.setItem("token", token);
-      router.push("/welcome");
-    })
-    .catch((err) => console.log(err));
+  });
+  const { name, token } = resLogin;
+  window.localStorage.setItem("name", name);
+  window.localStorage.setItem("token", token);
+  router.push("/welcome");
 };
 </script>
 
