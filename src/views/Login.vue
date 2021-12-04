@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import $http from "../utils/request";
 import { User, Lock } from "@element-plus/icons";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { SHA256 } from "crypto-js";
-
+import { loginApi } from "../api";
 const username = ref("");
 const password = ref("");
 const router = useRouter();
@@ -14,12 +13,11 @@ const login = async () => {
     ElMessage.warning("用户名或密码未填写！");
     return;
   }
-  await $http
-    .post("/login", {
-      username: username.value,
-      password: SHA256(password.value),
-    })
-    .then((res: any) => {
+  await loginApi({
+    username: username.value,
+    password: SHA256(password.value),
+  })
+    .then((res) => {
       const { name, token } = res;
       window.localStorage.setItem("name", name);
       window.localStorage.setItem("token", token);
