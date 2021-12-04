@@ -10,10 +10,12 @@ const $http = axios.create({
 });
 // 添加请求拦截器
 $http.interceptors.request.use(
-  (request: AxiosRequestConfig) => {
-    // 添加token
-    // TODO
-    return request;
+  (requestConfig: AxiosRequestConfig) => {
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      requestConfig.headers = { Authorization: token };
+    }
+    return requestConfig;
   },
   (error) => Promise.reject(error)
 );
@@ -23,8 +25,6 @@ $http.interceptors.response.use(
   (response: AxiosResponse) => {
     const { code, data, desc } = response.data;
     if (code >= 400) return ElMessage.error(desc);
-    // 如果没有token就返回到login页面
-    // TODO
     return data;
   },
   (error) => {
